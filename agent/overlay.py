@@ -9,6 +9,11 @@ except ImportError:
     ImageDraw = None
     ImageTk = None
 
+try:
+    import keyboard as kb_global
+except ImportError:
+    kb_global = None
+
 class OverlayHUD:
     """Agentic-style AI HUD: dark, minimal, robust chat overlay."""
 
@@ -29,6 +34,7 @@ class OverlayHUD:
         self.reasoning_frame = None
         self.last_reasoning = None
         self.reasoning_poll_id = None
+        self._is_visible = True
 
         # --- DESIGN TOKENS ---
         self.radius_lg = 22
@@ -178,15 +184,6 @@ class OverlayHUD:
             self.chat_frame, bg=self.color_panel, highlightthickness=0, bd=0
         )
         self.chat_canvas.pack(side="left", fill="both", expand=True)
-
-        # SCROLLBAR REMOVED - Only mousewheel scrolling will work
-        # scrollbar = tk.Scrollbar(
-        #     self.chat_frame, orient="vertical", command=self.chat_canvas.yview,
-        #     bg=self.color_panel, troughcolor=self.color_panel,
-        #     highlightthickness=0, bd=0, activebackground=self.color_panel
-        # )
-        # scrollbar.pack(side="right", fill="y")
-        # self.chat_canvas.configure(yscrollcommand=scrollbar.set)
 
         self.chat_container = tk.Frame(self.chat_canvas, bg=self.color_panel)
         self.canvas_frame = self.chat_canvas.create_window(
@@ -362,6 +359,9 @@ class OverlayHUD:
         self._log_handler.setFormatter(logging.Formatter("%(message)s"))
         logging.getLogger().addHandler(self._log_handler)
 
+        # Setup global keyboard shortcut
+        self._setup_global_hotkey()
+        
         self.root.bind("<Escape>", lambda e: self.root.destroy())
         self.root.after(10, self._ensure_front)
         
@@ -369,6 +369,31 @@ class OverlayHUD:
         
         # Add usage tips
         self._show_usage_tips()
+
+    # ---------- KEYBOARD SHORTCUT ----------
+
+    def _setup_global_hotkey(self):
+        """Setup global Ctrl+H hotkey for hide/show"""
+        if kb_global:
+            try:
+                # Register global hotkey (works even when window is hidden)
+                kb_global.add_hotkey('ctrl+h', self._toggle_visibility)
+            except Exception as e:
+                print(f"Failed to setup global hotkey: {e}")
+    
+    def _toggle_visibility(self):
+        """Toggle overlay visibility"""
+        try:
+            if self._is_visible:
+                self.root.withdraw()
+                self._is_visible = False
+            else:
+                self.root.deiconify()
+                self.root.lift()
+                self.root.attributes("-topmost", True)
+                self._is_visible = True
+        except Exception as e:
+            print(f"Toggle error: {e}")
 
     # ---------- DRAWING ----------
 
@@ -483,6 +508,9 @@ Voice Mode:
    "Hey Theta, open notepad and write hello world"
    
 Stop: Click pause button (■) to stop any task
+
+Keyboard Shortcut:
+   Ctrl+H: Hide/Show overlay
 """
         self._add_system_message(tips, "info")
 
@@ -600,8 +628,6 @@ Stop: Click pause button (■) to stop any task
             self.typing_frame.destroy()
             self.typing_frame = None
             self.state_label = None
-        # Keep reasoning visible for a bit longer so user can read it
-        # Will be hidden when next task starts
     
     def _on_agent_state_change(self, state: str):
         """Called when agent state changes"""
@@ -692,7 +718,6 @@ Stop: Click pause button (■) to stop any task
         
         # Content frame (collapsible) - INITIALLY HIDDEN
         content_frame = tk.Frame(self.reasoning_frame, bg=self.color_panel)
-        # Don't pack yet - keep collapsed by default
         
         # Reasoning text
         reasoning_label = tk.Label(
@@ -733,8 +758,6 @@ Stop: Click pause button (■) to stop any task
             self.reasoning_frame.destroy()
             self.reasoning_frame = None
     
-    # Add this NEW method to overlay.py after _hide_reasoning method
-
     def show_permission_dialog(self, action_description: str, callback):
         """Show permission approval dialog in overlay"""
         # Pause any ongoing animations
@@ -819,7 +842,6 @@ Stop: Click pause button (■) to stop any task
         reject_btn.bind("<Leave>", on_reject_leave)
         
         self._scroll_to_bottom()
-
 
     # ---------- PLACEHOLDER / ENTRY ----------
 
@@ -1061,6 +1083,13 @@ Stop: Click pause button (■) to stop any task
 
         def _on_close():
             try:
+                # Unregister global hotkey
+                if kb_global:
+                    try:
+                        kb_global.remove_hotkey('ctrl+h')
+                    except:
+                        pass
+                    
                 if self.agent_runner:
                     try:
                         self.agent_runner.stop_voice()
