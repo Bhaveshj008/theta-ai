@@ -152,9 +152,9 @@ class AgentRunner:
         state = self.get_state()
         labels = {
             "idle": "Ready",
-            "perceiving": "👁 Perceiving",
-            "planning": "🧠 Planning",
-            "executing": "⚙️ Executing",
+            "perceiving": "Perceiving",
+            "planning": "Planning",
+            "executing": "Executing",
             "waiting_permission": "⚠️ Permission Needed",
             "paused": "⏸ Paused",
             "error": "❌ Error",
