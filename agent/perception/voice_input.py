@@ -163,6 +163,10 @@ class AdvancedVoiceInput:
             "eTheta",
             "he Theta",
             "hay Theta",
+            "hey tita",
+            "hey, tita",
+            " theta",
+            "hey, teta"
         ]
         
         # State management
