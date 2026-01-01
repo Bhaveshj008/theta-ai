@@ -352,21 +352,31 @@ class DesktopAgent:
             history=self.context.history,
             iteration=self.context.iterations
         )
-
+        
         messages = [
             Message(role="system", content=system_prompt),
             Message(role="user", content=user_prompt)
         ]
-
         response = await self.llm_client.chat_completion(
             messages,
             temperature=0.3,
             json_mode=True
         )
-
         import json
         action = json.loads(response.content)
-
+        if (action.get("tool") == "app_controller" and 
+            action.get("action") == "launch" and
+            action.get("params", {}).get("app_name", "").lower() in ["chrome", "browser", "firefox", "edge", "chromium"]):
+            
+            console.print("[yellow]⚠️ Correcting: Redirecting browser launch to browser.goto()[/]")
+            action = {
+                "type": "action",
+                "tool": "browser",
+                "action": "goto",
+                "params": {"url": "https://www.bing.com"},
+                "reasoning": "Corrected from app_controller to browser tool"
+            }
+    
         console.print(f"[dim]Reasoning: {action.get('reasoning', '')}[/]")
 
         return action
@@ -706,7 +716,7 @@ class DesktopAgent:
                     if result["success"]:
                         console.print("[green] Task completed successfully[/]")
                     else:
-                        console.print(f"[red]âœ— Task failed: {result.get('error', 'Unknown error')}[/]")
+                        console.print(f"[red]Task failed: {result.get('error', 'Unknown error')}[/]")
 
                     console.print()
 

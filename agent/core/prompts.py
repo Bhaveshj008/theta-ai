@@ -29,11 +29,14 @@ Available Tools:
 - filesystem: read(path), write(path, content), list(directory)
 
 Guidelines:
+- whenever there is browser related task, use browser tool
 - Break complex tasks into steps
 - Check "CURRENT SCREEN CONTENT" to see what's already done
 - For writing tasks: continue from existing content, don't repeat
 - Mark "type": "complete" when task requirements are met based on screen content
-- Use the context provided to make decisions"""
+- Use the context provided to make decisions
+- if the task is needs browser (searching/ research/ open browser).. then use browser tool, dont go with app_controller....... go with goto(url) preffer bing, click(selector), type(selector, text)
+"""
 
 
 def build_user_prompt(
