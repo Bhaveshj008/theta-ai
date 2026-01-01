@@ -1,0 +1,53 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# --- Virtual Environment ---
+.venv/
+env/
+venv/
+
+# --- Environment Config ---
+.env
+*.env
+
+# --- Build / Distribution ---
+build/
+dist/
+*.spec
+*.egg-info/
+*.egg
+
+# --- OS / Editor Files ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Models / Large Assets ---
+models/
+*.bin
+*.pth
+*.pt
+*.ckpt
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Runtime Artifacts ---
+*.tmp
+*.cache
+.cache/
+__cache__/
+
+# --- PyInstaller Output (likely for invisible copilot) ---
+*.manifest
+*.dll
+*.exe
+
+# --- Windows PowerShell cache ---
+*.ps1.tmp
