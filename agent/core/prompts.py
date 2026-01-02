@@ -77,7 +77,7 @@ def build_user_prompt(
                 previous_typed_content.append(typed_text[:200] + "..." if len(typed_text) > 200 else typed_text)
         
         # Compact history
-        status = "" if result.get("success") else "âœ—"
+        status = "" if result.get("success") else "—"
         recent.append(f"{status} {act.get('tool')}.{act.get('action')}")
     
     # Build element hint only if just discovered

@@ -294,7 +294,7 @@ class DesktopAgent:
                 console.print("[bold green] Task appears to be complete![/]")
                 return {"completed": True}
         else:
-            console.print(f"[red]âœ— Failed:[/] {result.get('error', '')[:100]}")
+            console.print(f"[red]— Failed:[/] {result.get('error', '')[:100]}")
             self.context.history.append({
                 "iteration": self.context.iterations,
                 "action": action,
