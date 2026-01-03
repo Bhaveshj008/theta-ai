@@ -59,10 +59,10 @@ class OverlayHUD:
         self.color_warning = "#f59e0b"
         self.color_error = "#ef4444"
 
-        self.font_sans = ("Segoe UI", 10)
-        self.font_sans_sm = ("Segoe UI", 9)
-        self.font_sans_md = ("Segoe UI", 11)
-        self.font_sans_lg = ("Segoe UI Semibold", 13)
+        self.font_sans = ("Segoe UI", 15)
+        self.font_sans_sm = ("Segoe UI", 14)
+        self.font_sans_md = ("Segoe UI", 16)
+        self.font_sans_lg = ("Segoe UI Semibold", 18)
 
         # --- ROOT ---
         self.root = tk.Tk()
@@ -168,7 +168,7 @@ class OverlayHUD:
             controls, text="×", command=self.root.destroy,
             bd=0, relief="flat", cursor="hand2", width=2,
             bg=self.color_panel, fg=self.color_text_muted,
-            activebackground=self.color_panel, font=("Segoe UI", 16)
+            activebackground=self.color_panel, font=("Segoe UI", 20)
         )
         close_btn.pack(side="left")
         close_btn.bind("<Enter>", lambda e: close_btn.config(fg=self.color_error))
@@ -582,7 +582,7 @@ Keyboard Shortcut:
 
         msg_label = tk.Label(
             msg_frame, text=f"• {text}", bg=self.color_panel,
-            fg=color, font=(self.font_sans[0], 9, "italic"),
+            fg=color, font=(self.font_sans[0], 11, "italic"),
             wraplength=400, justify="left",
         )
         msg_label.pack(anchor="w")
@@ -604,7 +604,7 @@ Keyboard Shortcut:
         self.state_label = tk.Label(
             bubble, text="starting...", bg=self.color_agent_bubble,
             fg=self.color_text_soft,
-            font=(self.font_sans[0], 10, "italic"), padx=14, pady=8,
+            font=(self.font_sans[0], 13, "italic"), padx=14, pady=8,
         )
         self.state_label.pack()
 
@@ -712,7 +712,7 @@ Keyboard Shortcut:
         # Reasoning title
         title = tk.Label(
             header, text="thinking:", bg=self.color_panel,
-            fg=self.color_accent, font=(self.font_sans[0], 9)
+            fg=self.color_accent, font=(self.font_sans[0], 12)
         )
         title.pack(side="left", padx=4)
         
@@ -775,7 +775,7 @@ Keyboard Shortcut:
         header_label = tk.Label(
             header, text="⚠️  PERMISSION REQUIRED", 
             bg="#f59e0b", fg="#000000",
-            font=(self.font_sans[0], 11, "bold"),
+            font=(self.font_sans[0], 13, "bold"),
             padx=12, pady=8
         )
         header_label.pack()
@@ -809,7 +809,7 @@ Keyboard Shortcut:
         approve_btn = tk.Button(
             button_frame, text="✓ Approve", command=on_approve,
             bg="#22c55e", fg="#ffffff", bd=0, relief="flat",
-            font=(self.font_sans[0], 10, "bold"), cursor="hand2",
+            font=(self.font_sans[0], 12, "bold"), cursor="hand2",
             padx=20, pady=10
         )
         approve_btn.pack(side="left", padx=(0, 8))
@@ -818,7 +818,7 @@ Keyboard Shortcut:
         reject_btn = tk.Button(
             button_frame, text="✗ Reject", command=on_reject,
             bg="#ef4444", fg="#ffffff", bd=0, relief="flat",
-            font=(self.font_sans[0], 10, "bold"), cursor="hand2",
+            font=(self.font_sans[0], 12, "bold"), cursor="hand2",
             padx=20, pady=10
         )
         reject_btn.pack(side="left")
